@@ -3,7 +3,7 @@ import { LoginScreen } from '../screens/LoginScreen';
 import { PRIMARY_COLOR } from '../theme/commons/constants';
 import { RegisterScreen } from '../screens/RegisterScreen';
 import { useState } from 'react';
-import { HomeScreen } from '../screens/HomeScreen';
+import { HomeScreen } from '../screens/HomeScreen/HomeScreen';
 
 //Definir interface con usuarios de prueba
 export interface User {
