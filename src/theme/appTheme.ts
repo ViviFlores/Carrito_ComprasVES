@@ -150,5 +150,40 @@ export const styles = StyleSheet.create({
     buttonAddCartText: {
         color: SECONDARY_COLOR,
         fontWeight: 'bold'
+    },
+    textStock: {
+        color: '#7f1919',
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center'
+    },
+    headerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    textIconCar: {
+        backgroundColor: SECONDARY_COLOR,
+        paddingHorizontal: 5,
+        borderRadius: 10,
+        fontSize: 12,
+        fontWeight: 'bold'
+    },
+    headerTable: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    textHeaderTable: {
+        fontWeight: 'bold',
+        color: PRIMARY_COLOR
+    },
+    totalContainer:{
+        alignItems:'flex-end',
+        paddingTop:15,
+        paddingBottom:10,
+        paddingHorizontal:10
+    },
+    textTotal:{
+        fontSize:17,
+        fontWeight:'bold',
     }
 })

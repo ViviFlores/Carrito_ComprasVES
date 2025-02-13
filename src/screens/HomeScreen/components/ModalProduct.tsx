@@ -10,13 +10,31 @@ interface Props {
     product: Product;
     isVisible: boolean;
     setShowModalProduct: () => void;
+    changeStock: (id: number, quantity: number) => void;
 }
 
-export const ModalProduct = ({ product, isVisible, setShowModalProduct }: Props) => {
+export const ModalProduct = ({ product, isVisible, setShowModalProduct, changeStock }: Props) => {
     //hook useWindowDimensions: permite obtener las dimensiones de la ventana
     const { width } = useWindowDimensions();
     //hook useState: permite manejar el estado de la cantidad
     const [quantity, setQuantity] = useState<number>(1);
+
+    //Función cerrar modal - modificar el valor de quantity
+    const closeModal = (): void => {
+        //Cerrar modal
+        setShowModalProduct();
+        //Modificar el valor de quantity
+        setQuantity(1);
+    }
+
+    //Función agregar al carrito
+    const handleAddProduct = (): void => {
+        //Actualizar el stock del producto
+        changeStock(product.id, quantity);
+        //Cerrar modal
+        closeModal();
+    }
+
 
     return (
         <Modal visible={isVisible} animationType='fade' transparent={true}>
@@ -33,7 +51,7 @@ export const ModalProduct = ({ product, isVisible, setShowModalProduct }: Props)
                             <Icon name='cancel'
                                 size={23}
                                 color={PRIMARY_COLOR}
-                                onPress={setShowModalProduct} />
+                                onPress={closeModal} />
                         </View>
                     </View>
                     <View>
@@ -42,31 +60,41 @@ export const ModalProduct = ({ product, isVisible, setShowModalProduct }: Props)
                         }}
                             style={styles.modalImage} />
                     </View>
-                    <View style={styles.quantityContainer}>
-                        <TouchableOpacity style={styles.buttonQuantity}
-                            onPress={() => setQuantity(quantity - 1)}
-                            disabled={quantity === 1}>
-                            <Text style={styles.buttonQuantityText}>-1</Text>
-                        </TouchableOpacity>
+                    {
+                        (product.stock === 0)
+                            ? <Text style={styles.textStock}>
+                                Producto Agotado!
+                            </Text>
+                            :
+                            <View>
+                                <View style={styles.quantityContainer}>
+                                    <TouchableOpacity style={styles.buttonQuantity}
+                                        onPress={() => setQuantity(quantity - 1)}
+                                        disabled={quantity === 1}>
+                                        <Text style={styles.buttonQuantityText}>-1</Text>
+                                    </TouchableOpacity>
 
-                        <Text style={styles.textQuantity}>{quantity}</Text>
+                                    <Text style={styles.textQuantity}>{quantity}</Text>
 
-                        <TouchableOpacity style={styles.buttonQuantity}
-                            onPress={() => setQuantity(quantity + 1)}
-                            disabled={quantity === product.stock}>
-                            <Text style={styles.buttonQuantityText}>+1</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ alignItems: 'center' }}>
-                        <Text style={styles.textQuantity}>
-                            Total: ${(product.price * quantity).toFixed(2)}
-                        </Text>
-                    </View>
-                    <TouchableOpacity style={styles.buttonAddCart}>
-                        <Text style={styles.buttonAddCartText}>
-                            Agregar Carrito
-                        </Text>
-                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.buttonQuantity}
+                                        onPress={() => setQuantity(quantity + 1)}
+                                        disabled={quantity === product.stock}>
+                                        <Text style={styles.buttonQuantityText}>+1</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{ alignItems: 'center' }}>
+                                    <Text style={styles.textQuantity}>
+                                        Total: ${(product.price * quantity).toFixed(2)}
+                                    </Text>
+                                </View>
+                                <TouchableOpacity style={styles.buttonAddCart}
+                                    onPress={handleAddProduct}>
+                                    <Text style={styles.buttonAddCartText}>
+                                        Agregar Carrito
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                    }
                 </View>
             </View>
         </Modal>
